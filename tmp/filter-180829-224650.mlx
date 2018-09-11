@@ -1,0 +1,20 @@
+<!DOCTYPE FilterScript>
+<FilterScript>
+ <filter name="Remove Zero Area Faces"/>
+<filter name="Remove Unreferenced Vertices"/>
+<filter name="Remove Duplicate Faces"/>
+<filter name="Remove Duplicate Vertices"/>
+
+ <filter name="Transform: Scale, Normalize">
+  <Param description="X Axis" value="1" name="axisX" type="RichFloat"/>
+  <Param description="Y Axis" value="1" name="axisY" type="RichFloat"/>
+  <Param description="Z Axis" value="1" name="axisZ" type="RichFloat"/>
+  <Param description="Uniform Scaling" value="true" name="uniformFlag" type="RichBool"/>
+  <Param enum_val2="custom point" enum_cardinality="3" description="Center of scaling:" enum_val1="barycenter" value="2" name="scaleCenter" enum_val0="origin" type="RichEnum"/>
+  <Param x="0" y="0" description="Custom center" z="0" name="customCenter" type="RichPoint3f"/>
+  <Param description="Scale to Unit bbox" value="true" name="unitFlag" type="RichBool"/>
+  <Param description="Freeze Matrix" value="true" name="Freeze" type="RichBool"/>
+  <Param description="Apply to all visible Layers" value="false" name="allLayers" type="RichBool"/>
+ </filter>
+</FilterScript>
+

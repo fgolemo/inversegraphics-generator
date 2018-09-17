@@ -15,12 +15,14 @@ class ObjGenerator(object):
         self.cube_len = cube_len
         self.deadlock_safe = deadlock_safe
 
+    def grid_to_str(self, grid):
+        out = grid.flatten()
+        out = "".join([str(x) for x in out])
+        return out
+
     def node_to_grid(self, node, replace_head=False):
-        out = np.fromstring(node.id, dtype=np.uint8).reshape((
-            self.grid_size,
-            self.grid_size,
-            self.grid_size)
-        )
+        out = [int(x) for x in node.id]
+        out = np.array(out, dtype=np.uint8).reshape((self.grid_size, self.grid_size, self.grid_size))
         if replace_head:
             out[out == 2] = 1
         return out
@@ -98,8 +100,7 @@ class ObjGenerator(object):
 
         return vertices, faces
 
-    @staticmethod
-    def plot_cube(vertices, faces):
+    def plot_cube(self, vertices, faces):
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
 
@@ -118,9 +119,9 @@ class ObjGenerator(object):
         ax.set_ylabel('Y axis')
         ax.set_zlabel('Z axis')
 
-        ax.set_xlim(0, 4)
-        ax.set_ylim(0, 4)
-        ax.set_zlim(0, 4)
+        ax.set_xlim(0, self.grid_size)
+        ax.set_ylim(0, self.grid_size)
+        ax.set_zlim(0, self.grid_size)
 
     def walk_snek(self, snek_len_min, snek_len_max):
         # make grid

@@ -33,6 +33,9 @@ def plot_obj_from_list(in_list):
     ogs[idx].plot_cube(v,f)
     # plt.show()
 
+def embed_in_bigger(grid, bigger_size):
+    out = np.zeros(())
+
 for i in range(10):
     ref = refs[i]
     a = cola[i]

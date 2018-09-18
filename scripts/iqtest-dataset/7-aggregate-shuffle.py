@@ -70,11 +70,16 @@ combined = combined[indices_shuffled]
 
 col2 = np.roll(indices_shuffled, 100)
 col3 = np.roll(indices_shuffled, 123)
+col4 = np.roll(indices_shuffled, 245)
 
 out = []
 
 for i in tqdm(range(len(combined))):
-    line = [(combined[i], labels[i]), (combined[col2[i]], labels[col2[i]]), (combined[col3[i]], labels[col3[i]])]
+    line = [
+        (combined[i], labels[i]),
+        (combined[col2[i]], labels[col2[i]]),
+        (combined[col3[i]], labels[col3[i]]),
+        (combined[col4[i]], labels[col4[i]])]
     out.append(line)
 
 with open(OUT, "wb") as output_file:

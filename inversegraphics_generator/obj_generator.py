@@ -20,8 +20,8 @@ class ObjGenerator(object):
         out = "".join([str(x) for x in out])
         return out
 
-    def node_to_grid(self, node, replace_head=False):
-        out = [int(x) for x in node.id]
+    def str_to_grid(self, string, replace_head=False):
+        out = [int(x) for x in string]
         out = np.array(out, dtype=np.uint8).reshape((self.grid_size, self.grid_size, self.grid_size))
         if replace_head:
             out[out == 2] = 1
@@ -206,3 +206,14 @@ class ObjGenerator(object):
 
             for f in faces:
                 file_.write("f {} {} {}\n".format(*[int(x + 1) for x in f]))
+
+    @staticmethod
+    def center_grid(grid):
+        nonzeros = np.array(np.nonzero(grid))
+        minima = np.amin(nonzeros, axis=(1), keepdims=True).flatten()
+
+        if np.count_nonzero(minima) != 0:
+            for axis in range(3):
+                grid = np.roll(grid, -minima[axis], axis)
+
+        return grid

@@ -15,19 +15,19 @@ from iqtest_objs import get_data_dir
 SNEK_LEN = 15
 if len(sys.argv) > 1:
     SNEK_LEN = int(sys.argv[1])
-GRID_SIZE = 8
+GRID_SIZE = 7
 OUT_PATH = os.path.join(get_data_dir(),"tree-v2-snek_{}-grid_{}.pkl".format(SNEK_LEN, GRID_SIZE))
 BREAK_A = -1
-BREAK_B = 7
+BREAK_B = 6
 
 
 upper_bound = np.zeros(1, dtype=np.uint64)
-upper_bound[0] = 2
+upper_bound[0] = 16
 # tmp_factorial = GRID_SIZE ** 3
 # for _ in range(SNEK_LEN):
 #     upper_bound[0] *= tmp_factorial
 #     tmp_factorial -= 1
-for _ in range(int((SNEK_LEN - 1)/GRID_SIZE)):
+for _ in range(SNEK_LEN):
     upper_bound[0] *= 5
 print("upper bound:", upper_bound[0])
 

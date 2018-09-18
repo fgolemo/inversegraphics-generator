@@ -41,6 +41,11 @@ with open(OUT_PATH_3, "rb") as output_file:
 with open(OUT_PATH_4, "rb") as output_file:
     final4 = pickle.load(output_file)
 
+print (len(final1))
+print (len(final2))
+print (len(final3))
+print (len(final4))
+
 combined = final1 + final2 + final3 + final4
 
 print("loaded everything into memory, damn")
@@ -70,6 +75,7 @@ out = []
 
 for i in tqdm(range(len(combined))):
     line = [(combined[i], labels[i]), (combined[col2[i]], labels[col2[i]]), (combined[col3[i]], labels[col3[i]])]
+    out.append(line)
 
 with open(OUT, "wb") as output_file:
     pickle.dump(out, output_file)

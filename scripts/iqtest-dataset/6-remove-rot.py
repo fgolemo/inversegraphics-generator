@@ -15,15 +15,13 @@ og = ObjGenerator(GRID_SIZE, 1.0)
 
 final = []
 
-with open(OUT_PATH+"-unique.pkl", "wb") as output_file:
+with open(OUT_PATH+"-unique.pkl", "rb") as output_file:
     unique = pickle.load(output_file)
 
 for u in tqdm(unique):
-    print (u)
+    # print (u)
 
     u_grid = og.str_to_grid(u)
-    print (u_grid)
-    quit()
 
     clean = True
 

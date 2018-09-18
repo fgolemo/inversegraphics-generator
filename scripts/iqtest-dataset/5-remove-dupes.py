@@ -29,7 +29,7 @@ def getLeafs(node):
                 out_flat.append(child)
         return out_flat
 
-root = pickle.load(open(OUT_PATH, "rb"))
+root = pickle.load(open(IN_PATH, "rb"))
 
 leafs = getLeafs(root)
 print ("#leafs:",len(leafs))
@@ -47,7 +47,7 @@ def uniqify(seq):
        keys[e] = 1
    return keys.keys()
 
-unique = uniqify(centered)
+unique = list(uniqify(centered))
 
 print (len(unique))
 

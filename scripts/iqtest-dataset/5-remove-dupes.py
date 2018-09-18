@@ -58,42 +58,42 @@ with open(OUT_PATH+"-unique.pkl", "wb") as output_file:
 # now check for all [90,180,270] deg rotations
 # in all directions + centering if it exists.
 
-final = []
-
-for u in tqdm(unique):
-    u_grid = og.str_to_grid(u)
-
-    clean = True
-
-    for i in range(3):
-        tmp = og.grid_to_str(og.center_grid(np.rot90(u_grid, k=i+1, axes=(0, 1))))
-        if tmp in final:
-            clean = False
-            break
-
-    if not clean:
-        continue
-
-    for i in range(3):
-        tmp = og.grid_to_str(og.center_grid(np.rot90(u_grid, k=i+1, axes=(0, 2))))
-        if tmp in final:
-            clean = False
-            break
-
-    if not clean:
-        continue
-
-    for i in range(3):
-        tmp = og.grid_to_str(og.center_grid(np.rot90(u_grid, k=i+1, axes=(1, 2))))
-        if tmp in final:
-            clean = False
-            break
-
-    if not clean:
-        continue
-
-    final.append(u)
-
-with open(OUT_PATH+"-final.pkl", "wb") as output_file:
-    pickle.dump(final, output_file)
-    print ("wrote output to",output_file)
+# final = []
+#
+# for u in tqdm(unique):
+#     u_grid = og.str_to_grid(u)
+#
+#     clean = True
+#
+#     for i in range(3):
+#         tmp = og.grid_to_str(og.center_grid(np.rot90(u_grid, k=i+1, axes=(0, 1))))
+#         if tmp in final:
+#             clean = False
+#             break
+#
+#     if not clean:
+#         continue
+#
+#     for i in range(3):
+#         tmp = og.grid_to_str(og.center_grid(np.rot90(u_grid, k=i+1, axes=(0, 2))))
+#         if tmp in final:
+#             clean = False
+#             break
+#
+#     if not clean:
+#         continue
+#
+#     for i in range(3):
+#         tmp = og.grid_to_str(og.center_grid(np.rot90(u_grid, k=i+1, axes=(1, 2))))
+#         if tmp in final:
+#             clean = False
+#             break
+#
+#     if not clean:
+#         continue
+#
+#     final.append(u)
+#
+# with open(OUT_PATH+"-final.pkl", "wb") as output_file:
+#     pickle.dump(final, output_file)
+#     print ("wrote output to",output_file)

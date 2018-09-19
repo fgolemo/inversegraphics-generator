@@ -2,9 +2,7 @@ import os
 import pickle
 import numpy as np
 from tqdm import tqdm
-import matplotlib.pyplot as plt
 from inversegraphics_generator.obj_generator import ObjGenerator
-from iqtest_objs import get_data_dir
 
 # spotify:track:201ohaBcMqr1k7jzEgBAKh
 # https://open.spotify.com/track/201ohaBcMqr1k7jzEgBAKh?si=eq4tI0JEQBiPTL3Rg8Ul_w

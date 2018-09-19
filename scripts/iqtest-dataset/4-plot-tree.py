@@ -2,7 +2,7 @@ import pickle
 import os
 import matplotlib.pyplot as plt
 from inversegraphics_generator.obj_generator import ObjGenerator
-from iqtest_objs import get_data_dir
+from inversegraphics_generator.iqtest_objs import get_data_dir
 
 
 SNEK_LEN = 9

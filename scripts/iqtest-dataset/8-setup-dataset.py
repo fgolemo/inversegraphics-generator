@@ -3,8 +3,6 @@ import pickle
 import numpy as np
 from tqdm import tqdm
 
-from iqtest_objs import get_data_dir
-
 # OUT = os.path.join(get_data_dir(), "aggregated.pkl")
 IN_PATH = os.path.expanduser("~/data/ig/aggregated.pkl")
 OUT_PATH = os.path.expanduser("~/data/ig/aggregated-question.pkl")

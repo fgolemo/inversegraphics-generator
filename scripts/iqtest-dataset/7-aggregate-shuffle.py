@@ -4,7 +4,7 @@ import numpy as np
 from tqdm import tqdm
 
 from inversegraphics_generator.obj_generator import ObjGenerator
-from iqtest_objs import get_data_dir
+from inversegraphics_generator.iqtest_objs import get_data_dir
 
 OUT = os.path.join(get_data_dir(), "aggregated.pkl")
 

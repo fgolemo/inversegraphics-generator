@@ -3,10 +3,9 @@ import time
 
 import numpy as np
 import tempfile
-import torch
 
 from inversegraphics_generator.obj_generator import ObjGenerator
-from iqtest_objs import get_data_dir
+from inversegraphics_generator.iqtest_objs import get_data_dir
 
 MAX_GRID = 8
 

@@ -1,4 +1,5 @@
 
 .idea
 *.pyc
-iqtest_objs/*.pkl
+*.pkl
+*.egg-info

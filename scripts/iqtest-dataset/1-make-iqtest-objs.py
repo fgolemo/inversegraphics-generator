@@ -1,8 +1,7 @@
 import os
-import numpy as np
 import matplotlib.pyplot as plt
 from inversegraphics_generator.obj_generator import ObjGenerator
-from iqtest_objs import get_data_dir
+from inversegraphics_generator.iqtest_objs import get_data_dir
 
 OUT_PATH = os.path.join(get_data_dir(), "object-{:06d}.obj")
 

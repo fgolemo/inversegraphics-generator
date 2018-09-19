@@ -1,16 +1,14 @@
 import os
 import pickle
 import sys
-import math
 
 import numpy as np
 from anytree import AnyNode, LevelOrderGroupIter
-from anytree.exporter import DictExporter
 from tqdm import tqdm
 
 from inversegraphics_generator.constants import actions
 from inversegraphics_generator.obj_generator import ObjGenerator
-from iqtest_objs import get_data_dir
+from inversegraphics_generator.iqtest_objs import get_data_dir
 
 SNEK_LEN = 15
 if len(sys.argv) > 1:

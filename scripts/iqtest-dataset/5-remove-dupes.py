@@ -1,11 +1,9 @@
 import pickle
 import os
-import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 from inversegraphics_generator.obj_generator import ObjGenerator
-from iqtest_objs import get_data_dir
-import numpy as np
+from inversegraphics_generator.iqtest_objs import get_data_dir
 
 SNEK_LEN = 9
 GRID_SIZE = 4

@@ -180,8 +180,7 @@ class ObjGenerator(object):
 
         return vertices, faces
 
-    def write_obj(self, grid, vertices, faces, index, out_path="../iqtest_objs/object-{:06d}.obj"):
-        out_path = out_path.format(index)
+    def write_obj(self, grid, vertices, faces, out_path):
         if not os.path.exists(os.path.dirname(out_path)):
             try:
                 os.makedirs(os.path.dirname(out_path))
@@ -189,7 +188,7 @@ class ObjGenerator(object):
                 if exc.errno != errno.EEXIST:
                     raise
 
-        with open(out_path.format(index), "w") as file_:
+        with open(out_path, "w") as file_:
             file_.write("# made with _flo_\n\n")
 
             for y in range(self.grid_size):

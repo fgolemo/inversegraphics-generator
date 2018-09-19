@@ -13,7 +13,7 @@ PARAMS = [(11, 5), (13, 5), (14, 6), (15, 8)]
 with open(IN_PATH, "rb") as output_file:
     aggr = pickle.load(output_file)
 
-order = np.arange(3)
+order = np.arange(4)
 
 print(len(aggr))
 
@@ -23,6 +23,7 @@ refs = []
 cola = []
 colb = []
 colc = []
+cold = []
 answ = []
 
 for i in tqdm(range(len(aggr))):
@@ -39,6 +40,7 @@ for i in tqdm(range(len(aggr))):
     cola.append((line_tmp[0][0],line_tmp[0][1]))
     colb.append((line_tmp[1][0],line_tmp[1][1]))
     colc.append((line_tmp[2][0],line_tmp[2][1]))
+    cold.append((line_tmp[3][0],line_tmp[3][1]))
 
     right_solution_idx = np.where(line_idx == 0)[0][0]
     answ.append(right_solution_idx)
@@ -49,6 +51,7 @@ with open(OUT_PATH, "wb") as output_file:
     pickle.dump(cola, output_file)
     pickle.dump(colb, output_file)
     pickle.dump(colc, output_file)
+    pickle.dump(cold, output_file)
     pickle.dump(answ, output_file)
     print ("wrote output to",output_file)
 

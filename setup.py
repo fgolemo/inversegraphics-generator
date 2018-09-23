@@ -5,5 +5,7 @@ setup(name='inversegraphics_generator',
       install_requires=['anytree',
                         'numpy',
                         'matplotlib',
-                        'tqdm']
+                        'tqdm',
+                        'torch',
+                        'h5py']
       )

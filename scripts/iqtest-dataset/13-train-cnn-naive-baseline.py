@@ -29,11 +29,9 @@ criterion = nn.BCELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 # Train the model
-total_step = len(ds)
+total_step = int(len(ds)/BATCH)
 for epoch in range(EPOCHS):
     for i, (questions, answers) in enumerate(dl):
-        quit()
-
         # Forward pass
         outputs = model(questions.cuda())
         loss = criterion(outputs, answers.cuda())
@@ -46,7 +44,7 @@ for epoch in range(EPOCHS):
         exp.metric("epoch", epoch)
         exp.metric("loss", loss.item())
 
-        if (i + 1) % 1 == 0:
+        if (i + 1) % 100 == 0:
             print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
                   .format(epoch + 1, EPOCHS, i + 1, total_step, loss.item()))
 

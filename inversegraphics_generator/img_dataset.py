@@ -26,7 +26,7 @@ class IqImgDataset(Dataset):
         if self.group in ["train/labeled", "test", "val"]:
             answer = np.zeros(3,dtype=np.float32)
             answer[self.data["output"][idx]] = 1 # one-hot encoding
-            print (self.data["output"][idx], answer)
+            # print (self.data["output"][idx], answer)
 
         question = np.swapaxes(
             np.swapaxes(

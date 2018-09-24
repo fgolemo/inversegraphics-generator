@@ -7,13 +7,11 @@ from inversegraphics_generator.resnet50 import MultiResNet
 
 BATCH = 32
 
-
 ds = IqImgDataset("/data/lisa/data/iqtest/iqtest-dataset.h5", "test")
 # ds = IqImgDataset(os.path.join(get_data_dir(), "test.h5"), "train/labeled")
 dl = DataLoader(ds, batch_size=BATCH, shuffle=True, num_workers=0)
 
 model = MultiResNet().cuda()
-
 
 model.load_state_dict(torch.load('model-e40-b32-lr0.0001.ckpt'))
 
@@ -25,12 +23,11 @@ with torch.no_grad():
     for question, answer in dl:
         answer = answer.cuda()
         outputs = model(question.cuda())
+        _, ans = torch.max(answer.data, 1)
         _, predicted = torch.max(outputs.data, 1)
         total += answer.size(0)
-        correct += (predicted == answer).sum().item()
+        correct += (predicted == ans).sum().item()
 
     print('Test Accuracy of the model on the 10000 test images: {} %'.format(100 * correct / total))
 
 exp.end()
-
-

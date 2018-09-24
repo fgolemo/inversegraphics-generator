@@ -49,6 +49,12 @@ for epoch in range(EPOCHS):
             print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
                   .format(epoch + 1, EPOCHS, i + 1, total_step, loss.item()))
 
+    # Save the model checkpoint
+    torch.save(model.state_dict(), 'model-e{}-b{}-lr{}.ckpt'.format(
+        EPOCHS,
+        BATCH,
+        LEARNING_RATE))
+
 # # Test the model
 # model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
 # with torch.no_grad():
@@ -66,9 +72,4 @@ for epoch in range(EPOCHS):
 
 exp.end()
 
-# Save the model checkpoint
-torch.save(model.state_dict(), 'model-e{}-b{}-lr{}.ckpt'.format(
-    EPOCHS,
-    BATCH,
-    LEARNING_RATE))
 

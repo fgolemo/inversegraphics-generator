@@ -36,6 +36,9 @@ for idx in tqdm(range(10000)):
     questions[idx,0] = col_a[idx]
     np.random.shuffle(order)
     answer = np.where(order == 2)
+    print (order, answer)
+    if idx == 20:
+        quit()
     questions[idx, 1] = cols[order[0]][idx]
     questions[idx, 2] = cols[order[1]][idx]
     questions[idx, 3] = cols[order[2]][idx]

@@ -32,6 +32,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 total_step = len(ds)
 for epoch in range(EPOCHS):
     for i, (questions, answers) in enumerate(dl):
+        quit()
 
         # Forward pass
         outputs = model(questions.cuda())

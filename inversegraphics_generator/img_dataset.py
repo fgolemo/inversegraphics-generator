@@ -1,6 +1,5 @@
 import os
-
-import torch
+import numpy as np
 import h5py
 from torch.utils.data import Dataset
 
@@ -18,10 +17,24 @@ class IqImgDataset(Dataset):
         return len(self.data["input"])
 
     def __getitem__(self, idx):
-        out = {"input": self.data["input"][idx], "output": None}
+        # out = {"input": self.data["input"][idx], "output": None}
+        # if self.group in ["train/labeled", "test", "val"]:
+        #     out["output"] = self.data["output"][idx]
+        # return out
+        answer = None
         if self.group in ["train/labeled", "test", "val"]:
-            out["output"] = self.data["output"][idx]
-        return out
+            answer = np.zeros(3,dtype=np.float32)
+            answer[self.data["output"][idx]] = 1 # one-hot encoding
+
+
+        question = np.swapaxes(
+            np.swapaxes(
+                self.data["input"][idx],
+                1, 3),
+            2, 3
+        )
+
+        return (question, answer)
 
 
 if __name__ == '__main__':
@@ -29,5 +42,7 @@ if __name__ == '__main__':
 
     print(len(ds))
 
-    print(ds[0]["input"].shape)
-    print(ds[0]["output"])
+    question, answer = ds[0]
+
+    print(question.shape)
+    print(answer)

@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import h5py
 from tqdm import tqdm
 
-IN_PATH1 = "/data/milatmp1/mudumbas/Florian/linear/5000_baseline_data.npy"
-IN_PATH2 = "/data/milatmp1/mudumbas/Florian/linear/10000_baseline_data.npy"
+IN_PATH1 = "/data/milatmp1/mudumbas/Florian/test/5000_baseline_data.npy"
+IN_PATH2 = "/data/milatmp1/mudumbas/Florian/test/10000_baseline_data.npy"
 OUT_PATH = "/data/lisa/data/iqtest/iqtest-dataset.h5"
 
 
@@ -40,13 +40,8 @@ for idx in tqdm(range(10000)):
     questions[idx, 2] = cols[order[1]][idx]
     questions[idx, 3] = cols[order[2]][idx]
 
-with h5py.File(OUT_PATH, "w") as f:
-    train = f.create_group("train")
-    test = f.create_group("test")
-    val = f.create_group("val")
+with h5py.File(OUT_PATH, "r+") as f:
+    test = f["test"]
 
-    labeled = train.create_group("labeled")
-    unlabeled = train.create_group("unlabeled")
-
-    labeled_q = labeled.create_dataset("input",data=questions)
-    labeled_a = labeled.create_dataset("output",data=answers)
+    labeled_q = test.create_dataset("input",data=questions)
+    labeled_a = test.create_dataset("output",data=answers)

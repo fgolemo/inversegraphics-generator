@@ -51,7 +51,7 @@ val = np.zeros((len(answ) - 300000, 4, MAX_GRID, MAX_GRID, MAX_GRID), dtype=np.u
 for i in tqdm(range(len(answ))):
     if i < 200000:
         train[i,0,:,:,:] = get_grid(refs[i])
-        distr = 0
+        distr = 1
         for j in range(4):
             if answ[i] == j: # ignore the right answer
                 continue
@@ -60,7 +60,7 @@ for i in tqdm(range(len(answ))):
 
     if i >= 200000 and i < 300000:
         test[i-200000, 0, :, :, :] = get_grid(refs[i])
-        distr = 0
+        distr = 1
         for j in range(4):
             if answ[i] == j:  # ignore the right answer
                 continue
@@ -68,12 +68,12 @@ for i in tqdm(range(len(answ))):
             distr += 1
 
     if i >= 300000:
-        test[i-300000, 0, :, :, :] = get_grid(refs[i])
-        distr = 0
+        val[i-300000, 0, :, :, :] = get_grid(refs[i])
+        distr = 1
         for j in range(4):
             if answ[i] == j:  # ignore the right answer
                 continue
-            test[i-300000, distr, :, :, :] = get_grid(cols[j][i])
+            val[i-300000, distr, :, :, :] = get_grid(cols[j][i])
             distr += 1
 
 np.savez_compressed(OUT_PATH, train=train, test=test, val=val)

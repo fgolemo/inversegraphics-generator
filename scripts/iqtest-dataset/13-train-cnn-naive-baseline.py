@@ -23,7 +23,7 @@ exp.param("learning rate", LEARNING_RATE)
 ds = IqImgDataset(os.path.join(get_data_dir(), "test.h5"), "train/labeled")
 dl = DataLoader(ds, batch_size=BATCH, shuffle=True, num_workers=0)
 
-model = MultiResNet()
+model = MultiResNet().cuda()
 # Loss and optimizer
 criterion = nn.BCELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
@@ -34,8 +34,8 @@ for epoch in range(EPOCHS):
     for i, (questions, answers) in enumerate(dl):
 
         # Forward pass
-        outputs = model(questions)
-        loss = criterion(outputs, answers)
+        outputs = model(questions.cuda())
+        loss = criterion(outputs, answers.cuda())
 
         # Backward and optimize
         optimizer.zero_grad()

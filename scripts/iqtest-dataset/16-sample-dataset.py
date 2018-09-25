@@ -7,7 +7,7 @@ from inversegraphics_generator.iqtest_objs import get_data_dir
 ds_train = IqImgDataset("/data/lisa/data/iqtest/iqtest-dataset.h5", "train/labeled")
 ds_test = IqImgDataset("/data/lisa/data/iqtest/iqtest-dataset.h5", "test")
 
-OUT = os.path.join(get_data_dir(),"sample-{traintest}-{refans}-{idx}.png")
+OUT = os.path.join(get_data_dir(),"sample-{traintest}-{idx}-{refans}.png")
 
 def reshape(img):
     img = np.swapaxes(img, 0,2)
@@ -24,7 +24,7 @@ def sample(ds, idx, traintest):
         label = "ans"+str(ans+1)
         if ans == ans_idx:
             label += "c"
-        plt.imsave(OUT.format(traintest=traintest, refans=label, idx=idx),ds[idx][0][1+ans])
+        plt.imsave(OUT.format(traintest=traintest, refans=label, idx=idx),reshape(ds[idx][0][1+ans]))
 
 
 for i in range(10):

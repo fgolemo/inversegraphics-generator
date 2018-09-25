@@ -1,5 +1,6 @@
 import torch
 from torch.utils.data import DataLoader
+from tqdm import tqdm
 
 from inversegraphics_generator.img_dataset import IqImgDataset
 from inversegraphics_generator.iqtest_objs import get_data_dir
@@ -20,7 +21,7 @@ model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-b
 with torch.no_grad():
     correct = 0
     total = 0
-    for question, answer in dl:
+    for question, answer in tqdm(dl):
         answer = answer.cuda()
         outputs = model(question.cuda())
         _, ans = torch.max(answer.data, 1)
@@ -30,4 +31,3 @@ with torch.no_grad():
 
     print('Test Accuracy of the model on the 10000 test images: {} %'.format(100 * correct / total))
 
-exp.end()

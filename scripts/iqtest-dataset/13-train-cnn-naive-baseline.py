@@ -11,16 +11,18 @@ from inversegraphics_generator.iqtest_objs import get_data_dir
 from inversegraphics_generator.resnet50 import MultiResNet
 
 EPOCHS = 5
-BATCH = 5
+BATCH = 32
 LEARNING_RATE = 0.001
+SIZE = 1000
 
 exp = Experiment("[ig] cnn-naive")
 exp.param("epoch", EPOCHS)
+exp.param("size", SIZE)
 exp.param("batch", BATCH)
 exp.param("learning rate", LEARNING_RATE)
 
 # ds = IqImgDataset("/data/lisa/data/iqtest/iqtest-dataset.h5", "train/labeled")
-ds = IqImgDataset(os.path.join(get_data_dir(), "test.h5"), "train/labeled")
+ds = IqImgDataset(os.path.join(get_data_dir(), "test.h5"), "train/labeled", max_size=SIZE)
 dl = DataLoader(ds, batch_size=BATCH, shuffle=True, num_workers=0)
 
 model = MultiResNet().cuda()
@@ -49,7 +51,8 @@ for epoch in range(EPOCHS):
                   .format(epoch + 1, EPOCHS, i + 1, total_step, loss.item()))
 
     # Save the model checkpoint
-    torch.save(model.state_dict(), 'model-e{}-b{}-lr{}.ckpt'.format(
+    torch.save(model.state_dict(), 'model-s{}-e{}-b{}-lr{}.ckpt'.format(
+        SIZE,
         EPOCHS,
         BATCH,
         LEARNING_RATE))

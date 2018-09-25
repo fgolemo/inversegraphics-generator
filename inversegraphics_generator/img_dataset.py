@@ -7,14 +7,15 @@ from inversegraphics_generator.iqtest_objs import get_data_dir
 
 
 class IqImgDataset(Dataset):
-    def __init__(self, h5_path, group):
+    def __init__(self, h5_path, group, max_size=10000):
         assert group in ["train/labeled", "train/unlabeled", "test", "val"]
         self.file_handle = h5py.File(h5_path, 'r')
         self.group = group
         self.data = self.file_handle[group]
+        self.max_size = max_size
 
     def __len__(self):
-        return len(self.data["input"])
+        return len(self.data["input"][:self.max_size])
 
     def __getitem__(self, idx):
         # out = {"input": self.data["input"][idx], "output": None}

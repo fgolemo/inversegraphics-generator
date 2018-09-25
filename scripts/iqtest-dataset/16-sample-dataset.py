@@ -10,8 +10,8 @@ ds_test = IqImgDataset("/data/lisa/data/iqtest/iqtest-dataset.h5", "test")
 OUT = os.path.join(get_data_dir(),"sample-{traintest}-{refans}-{idx}.png")
 
 def reshape(img):
-    img = np.swapaxes(img, 1,3)
-    img = np.swapaxes(img, 1,2)
+    img = np.swapaxes(img, 0,2)
+    img = np.swapaxes(img, 0,1)
     img *= 255
     img = np.clip(img, 0, 255)
     return img.astype(np.uint8)
@@ -21,7 +21,7 @@ def sample(ds, idx, traintest):
 
     ans_idx = ds[idx][1].argmax()
     for ans in range(3):
-        label = "ans"+(ans+1)
+        label = "ans"+str(ans+1)
         if ans == ans_idx:
             label += "c"
         plt.imsave(OUT.format(traintest=traintest, refans=label, idx=idx),ds[idx][0][1+ans])

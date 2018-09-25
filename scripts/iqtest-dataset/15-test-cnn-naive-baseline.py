@@ -8,26 +8,33 @@ from inversegraphics_generator.resnet50 import MultiResNet
 
 BATCH = 32
 
-ds = IqImgDataset("/data/lisa/data/iqtest/iqtest-dataset.h5", "test")
-# ds = IqImgDataset(os.path.join(get_data_dir(), "test.h5"), "train/labeled")
-dl = DataLoader(ds, batch_size=BATCH, shuffle=True, num_workers=0)
+for size in [1000,10000]:
+    for ds in ["test","train/labeled"]:
 
-model = MultiResNet().cuda()
+        ds = IqImgDataset("/data/lisa/data/iqtest/iqtest-dataset-ambient.h5", ds)
+        # ds = IqImgDataset(os.path.join(get_data_dir(), "test.h5"), "train/labeled")
+        dl = DataLoader(ds, batch_size=BATCH, shuffle=True, num_workers=0)
 
-model.load_state_dict(torch.load('model-e40-b32-lr0.0001.ckpt'))
+        model = MultiResNet().cuda()
 
-# Test the model
-model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
-with torch.no_grad():
-    correct = 0
-    total = 0
-    for question, answer in tqdm(dl):
-        answer = answer.cuda()
-        outputs = model(question.cuda())
-        _, ans = torch.max(answer.data, 1)
-        _, predicted = torch.max(outputs.data, 1)
-        total += answer.size(0)
-        correct += (predicted == ans).sum().item()
+        model.load_state_dict(torch.load('model-s{}-e40-b32-lr0.0001.ckpt'.format(size)))
 
-    print('Test Accuracy of the model on the 10000 test images: {} %'.format(100 * correct / total))
+        # Test the model
+        model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
+        with torch.no_grad():
+            correct = 0
+            total = 0
+            for question, answer in tqdm(dl):
+                answer = answer.cuda()
+                outputs = model(question.cuda())
+                _, ans = torch.max(answer.data, 1)
+                _, predicted = torch.max(outputs.data, 1)
+                total += answer.size(0)
+                correct += (predicted == ans).sum().item()
+
+            print('Accuracy of {} sample model on {}: {} %'.format(
+                size,
+                ds,
+                100 * correct / total
+            ))
 

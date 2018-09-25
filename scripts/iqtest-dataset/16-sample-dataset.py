@@ -4,8 +4,8 @@ import numpy as np
 from inversegraphics_generator.img_dataset import IqImgDataset
 from inversegraphics_generator.iqtest_objs import get_data_dir
 
-ds_train = IqImgDataset("/data/lisa/data/iqtest/iqtest-dataset.h5", "train/labeled")
-ds_test = IqImgDataset("/data/lisa/data/iqtest/iqtest-dataset.h5", "test")
+ds_train = IqImgDataset("/data/lisa/data/iqtest/iqtest-dataset-ambient.h5", "train/labeled")
+ds_test = IqImgDataset("/data/lisa/data/iqtest/iqtest-dataset-ambient.h5", "test")
 
 OUT = os.path.join(get_data_dir(),"sample-{traintest}-{idx}-{refans}.png")
 

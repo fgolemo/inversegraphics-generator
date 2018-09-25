@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 import h5py
 from tqdm import tqdm
 
-IN_PATH1 = "/data/milatmp1/mudumbas/Florian/test/5000_baseline_data.npy"
-IN_PATH2 = "/data/milatmp1/mudumbas/Florian/test/10000_baseline_data.npy"
-OUT_PATH = "/data/lisa/data/iqtest/iqtest-dataset.h5"
+IN_PATH1 = "/data/milatmp1/mudumbas/Florian/linear_ambient_test/5000_baseline_data.npy"
+IN_PATH2 = "/data/milatmp1/mudumbas/Florian/linear_ambient_test/10000_baseline_data.npy"
+OUT_PATH = "/data/lisa/data/iqtest/iqtest-dataset-ambient.h5"
 
 
 def load(path):
@@ -13,6 +13,7 @@ def load(path):
     a = np.swapaxes(a, 2, 4)  # move color dim to back, but now r/g are swapped
     a = np.swapaxes(a, 2, 3)  # unswap r/g
     a /= 255  # assuming a.max() is around 255 rather than around 1
+    a = np.clip(a, 0, 1)
     return a
 
 

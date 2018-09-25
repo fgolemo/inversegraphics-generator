@@ -10,10 +10,10 @@ from inversegraphics_generator.img_dataset import IqImgDataset
 from inversegraphics_generator.iqtest_objs import get_data_dir
 from inversegraphics_generator.resnet50 import MultiResNet
 
-EPOCHS = 5
+EPOCHS = 40
 BATCH = 32
-LEARNING_RATE = 0.001
-SIZE = 1000
+LEARNING_RATE = 0.0001
+SIZE = 10000
 
 exp = Experiment("[ig] cnn-naive")
 exp.param("epoch", EPOCHS)
@@ -21,8 +21,8 @@ exp.param("size", SIZE)
 exp.param("batch", BATCH)
 exp.param("learning rate", LEARNING_RATE)
 
-# ds = IqImgDataset("/data/lisa/data/iqtest/iqtest-dataset.h5", "train/labeled")
-ds = IqImgDataset(os.path.join(get_data_dir(), "test.h5"), "train/labeled", max_size=SIZE)
+ds = IqImgDataset("/data/lisa/data/iqtest/iqtest-dataset-ambient.h5", "train/labeled", max_size=SIZE)
+# ds = IqImgDataset(os.path.join(get_data_dir(), "test.h5"), "train/labeled", max_size=SIZE)
 dl = DataLoader(ds, batch_size=BATCH, shuffle=True, num_workers=0)
 
 model = MultiResNet().cuda()

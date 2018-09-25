@@ -17,14 +17,14 @@ def reshape(img):
     return img.astype(np.uint8)
 
 def sample(ds, idx, traintest):
-    plt.imsave(OUT.format(traintest, "ref", idx),reshape(ds[idx][0][0]))
+    plt.imsave(OUT.format(traintest=traintest, refans="ref", idx=idx),reshape(ds[idx][0][0]))
 
     ans_idx = ds[idx][1].argmax()
     for ans in range(3):
         label = "ans"+(ans+1)
         if ans == ans_idx:
             label += "c"
-        plt.imsave(OUT.format(traintest, label, idx),ds[idx][0][1+ans])
+        plt.imsave(OUT.format(traintest=traintest, refans=label, idx=idx),ds[idx][0][1+ans])
 
 
 for i in range(10):

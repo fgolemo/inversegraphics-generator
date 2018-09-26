@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+import torch.nn.functional as F
 
 
 def conv3x3(in_planes, out_planes, stride=1):
@@ -108,8 +109,9 @@ class ResNet(nn.Module):
 
 class MultiResNet(nn.Module):
 
-    def __init__(self, hidden=512):
+    def __init__(self, hidden=512, siamese=False):
         super().__init__()
+        self.siamese = siamese
         self.resnet = ResNet(hidden)
         self.fc1 = nn.Linear(hidden * 4, hidden)
         self.fc2 = nn.Linear(hidden, 256)
@@ -129,7 +131,35 @@ class MultiResNet(nn.Module):
             ans_c), dim=1)))
         out = self.relu(self.fc2(out))
         out = self.softmax(self.fc3(out))
-        return out
+        if not self.siamese:
+            return out
+        else:
+            return (out, [ref, ans_a, ans_b, ans_c])
+
+
+class ContrastiveLoss(torch.nn.Module):
+    """
+    Contrastive loss function.
+    Based on: http://yann.lecun.com/exdb/publis/pdf/hadsell-chopra-lecun-06.pdf
+    """
+
+    def __init__(self, margin=2.0):
+        super(ContrastiveLoss, self).__init__()
+        self.margin = margin
+
+    def forward(self, output1, output2, label):
+        """
+
+        :param output1:
+        :param output2:
+        :param label: 0 - same image, 1 - different
+        :return:
+        """
+        euclidean_distance = F.pairwise_distance(output1, output2)
+        loss_contrastive = torch.mean((1 - label) * torch.pow(euclidean_distance, 2) +
+                                      (label) * torch.pow(torch.clamp(self.margin - euclidean_distance, min=0.0), 2))
+
+        return loss_contrastive
 
 
 if __name__ == '__main__':
@@ -138,5 +168,4 @@ if __name__ == '__main__':
 
     print(y.size())
     for i in range(10):
-        print (y[i])
-
+        print(y[i])

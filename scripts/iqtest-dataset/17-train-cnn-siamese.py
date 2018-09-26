@@ -36,7 +36,7 @@ total_step = int(len(ds)/BATCH)
 for epoch in range(EPOCHS):
     for i, (questions, answers) in enumerate(dl):
         # Forward pass
-        outputs, internals = model(questions)
+        outputs, internals = model(questions.cuda())
 
         loss = criterion_basic(outputs, answers.cuda())
 

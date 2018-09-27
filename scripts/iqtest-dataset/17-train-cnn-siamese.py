@@ -11,14 +11,12 @@ from inversegraphics_generator.iqtest_objs import get_data_dir
 from inversegraphics_generator.resnet50 import MultiResNet, ContrastiveLoss
 
 EPOCHS = 40
-BATCH = 32
+BATCH = 64
 LEARNING_RATE = 0.0001
 SIZE = 1000
-FACTOR_A = 10
-FACTOR_B = 1
 MARGIN = 2
 
-exp = Experiment("[ig] cnn-siamese")
+exp = Experiment("[ig] cnn-siamese2")
 exp.param("epoch", EPOCHS)
 exp.param("size", SIZE)
 exp.param("batch", BATCH)
@@ -30,7 +28,6 @@ dl = DataLoader(ds, batch_size=BATCH, shuffle=True, num_workers=0)
 
 model = MultiResNet(siamese=True)#.cuda()
 # Loss and optimizer
-criterion_basic = nn.CrossEntropyLoss()
 criterion_contrast = ContrastiveLoss(MARGIN)
 optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
@@ -43,9 +40,7 @@ for epoch in range(EPOCHS):
 
         answers = torch.from_numpy(np.where(answers == 1)[1]).long()
 
-        loss_a = criterion_basic(outputs, answers) #.cuda()
-
-        loss_b = torch.zeros(1).float()#.cuda()
+        loss = torch.zeros(1).float()#.cuda()
 
         for b in range(min(BATCH, len(answers))):
             # get matching ref-answer loss
@@ -54,13 +49,12 @@ for epoch in range(EPOCHS):
             # correct_ans_idx = np.where(answers[b] == 1)[0][0]
             other_answers.remove(answers[b])
 
-            loss_b += criterion_contrast(internals[0], internals[1 + answers[b]], 0)
+            loss += criterion_contrast(internals[0], internals[1 + answers[b]], 0)
 
             # add contrastive loss for the non-matching answers
-            loss_b += criterion_contrast(internals[0], internals[1 + other_answers[0]], 1)
-            loss_b += criterion_contrast(internals[0], internals[1 + other_answers[1]], 1)
+            loss += criterion_contrast(internals[0], internals[1 + other_answers[0]], 1)
+            loss += criterion_contrast(internals[0], internals[1 + other_answers[1]], 1)
 
-        loss = FACTOR_A * loss_a + FACTOR_B * (loss_b / min(BATCH, len(answers)))
 
         # Backward and optimize
         optimizer.zero_grad()
@@ -75,7 +69,7 @@ for epoch in range(EPOCHS):
                   .format(epoch + 1, EPOCHS, i + 1, total_step, loss.item()))
 
     # Save the model checkpoint
-    torch.save(model.state_dict(), 'model-siam-s{}-e{}-b{}-lr{}.ckpt'.format(
+    torch.save(model.state_dict(), 'model-siam2-s{}-e{}-b{}-lr{}.ckpt'.format(
         SIZE,
         EPOCHS,
         BATCH,

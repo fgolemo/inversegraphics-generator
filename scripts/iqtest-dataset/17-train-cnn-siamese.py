@@ -14,6 +14,9 @@ EPOCHS = 40
 BATCH = 32
 LEARNING_RATE = 0.0001
 SIZE = 1000
+FACTOR_A = 10
+FACTOR_B = 1
+MARGIN = 2
 
 exp = Experiment("[ig] cnn-siamese")
 exp.param("epoch", EPOCHS)
@@ -25,34 +28,39 @@ exp.param("learning rate", LEARNING_RATE)
 ds = IqImgDataset(os.path.join(get_data_dir(), "test.h5"), "train/labeled", max_size=SIZE)
 dl = DataLoader(ds, batch_size=BATCH, shuffle=True, num_workers=0)
 
-model = MultiResNet(siamese=True).cuda()
+model = MultiResNet(siamese=True)#.cuda()
 # Loss and optimizer
-criterion_basic = nn.BCELoss()
-criterion_contrast = ContrastiveLoss()
+criterion_basic = nn.CrossEntropyLoss()
+criterion_contrast = ContrastiveLoss(MARGIN)
 optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 # Train the model
-total_step = int(len(ds)/BATCH)
+total_step = int(len(ds) / BATCH)
 for epoch in range(EPOCHS):
     for i, (questions, answers) in enumerate(dl):
         # Forward pass
-        outputs, internals = model(questions.cuda())
+        outputs, internals = model(questions) #.cuda()
 
-        loss = criterion_basic(outputs, answers.cuda())
+        answers = torch.from_numpy(np.where(answers == 1)[1]).long()
 
-        for b in range(min(BATCH,len(answers))):
+        loss_a = criterion_basic(outputs, answers) #.cuda()
+
+        loss_b = torch.zeros(1).float()#.cuda()
+
+        for b in range(min(BATCH, len(answers))):
             # get matching ref-answer loss
-            other_answers = [0,1,2]
+            other_answers = [0, 1, 2]
 
-            correct_ans_idx = np.where(answers[b] == 1)[0][0]
-            other_answers.remove(correct_ans_idx)
+            # correct_ans_idx = np.where(answers[b] == 1)[0][0]
+            other_answers.remove(answers[b])
 
-            loss += criterion_contrast(internals[0], internals[1+correct_ans_idx], 0)
+            loss_b += criterion_contrast(internals[0], internals[1 + answers[b]], 0)
 
             # add contrastive loss for the non-matching answers
-            loss += criterion_contrast(internals[0], internals[1+other_answers[0]], 1)
-            loss += criterion_contrast(internals[0], internals[1+other_answers[1]], 1)
+            loss_b += criterion_contrast(internals[0], internals[1 + other_answers[0]], 1)
+            loss_b += criterion_contrast(internals[0], internals[1 + other_answers[1]], 1)
 
+        loss = FACTOR_A * loss_a + FACTOR_B * (loss_b / min(BATCH, len(answers)))
 
         # Backward and optimize
         optimizer.zero_grad()
@@ -89,5 +97,3 @@ for epoch in range(EPOCHS):
 #     print('Test Accuracy of the model on the 10000 test images: {} %'.format(100 * correct / total))
 
 exp.end()
-
-

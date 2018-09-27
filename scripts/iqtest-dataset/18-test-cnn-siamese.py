@@ -11,7 +11,7 @@ BATCH = 32
 for size in [1000,10000]:
     for dsn in ["test","train/labeled"]:
 
-        ds = IqImgDataset("/data/lisa/data/iqtest/iqtest-dataset-ambient.h5", dsn)
+        ds = IqImgDataset("/lindata/datasets/ig/iqtest-dataset-ambient.h5", dsn)
         # ds = IqImgDataset(os.path.join(get_data_dir(), "test.h5"), "train/labeled")
         dl = DataLoader(ds, batch_size=BATCH, shuffle=True, num_workers=0)
 

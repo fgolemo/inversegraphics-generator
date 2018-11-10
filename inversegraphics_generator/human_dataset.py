@@ -5,7 +5,8 @@ from torch.utils.data import Dataset
 import matplotlib.pyplot as plt
 from inversegraphics_generator.iqtest_objs import get_data_dir
 
-default_path = os.path.join(get_data_dir(),"..","3diqtt","human-test.h5")
+default_path = os.path.join(get_data_dir(), "..", "3diqtt", "human-test.h5")
+
 
 class HumanDataset(Dataset):
     def __init__(self, h5_path=default_path):
@@ -19,12 +20,13 @@ class HumanDataset(Dataset):
         return 20
 
     def __getitem__(self, idx):
-        if idx == 1: # we are not using sample 1 because it's used for the tutorial
+        if idx == 1:  # we are not using sample 1 because it's used for the tutorial
             idx = 20
-        return (self.references[idx,:,:,:3], self.answers[idx,:,:,:,:3], self.correct[idx])
+        return (self.references[idx, :, :, :3], self.answers[idx, :, :, :, :3], self.correct[idx])
 
     def get(self, idx):
         return (self.references[idx, :, :, :3], self.answers[idx, :, :, :, :3], self.correct[idx])
+
 
 if __name__ == '__main__':
     ds = HumanDataset()

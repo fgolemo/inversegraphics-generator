@@ -13,13 +13,18 @@ class HumanDataset(Dataset):
         self.references = file_handle["references"]
         self.answers = file_handle["answers"]
         self.correct = file_handle["correct"]
+        self.tru_len = len(self.correct)
 
     def __len__(self):
-        return len(self.correct)
+        return 20
 
     def __getitem__(self, idx):
+        if idx == 1: # we are not using sample 1 because it's used for the tutorial
+            idx = 20
         return (self.references[idx,:,:,:3], self.answers[idx,:,:,:,:3], self.correct[idx])
 
+    def get(self, idx):
+        return (self.references[idx, :, :, :3], self.answers[idx, :, :, :, :3], self.correct[idx])
 
 if __name__ == '__main__':
     ds = HumanDataset()

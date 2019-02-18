@@ -4,8 +4,8 @@ import numpy as np
 from inversegraphics_generator.img_dataset import IqImgDataset
 from inversegraphics_generator.iqtest_objs import get_data_dir
 
-ds_train = IqImgDataset("/data/lisa/data/iqtest/iqtest-dataset-ambient.h5", "train/labeled")
-ds_test = IqImgDataset("/data/lisa/data/iqtest/iqtest-dataset-ambient.h5", "test")
+ds_train = IqImgDataset("/Users/florian/data/ig/iqtest-dataset-ambient.h5", "train/labeled")
+ds_test = IqImgDataset("/Users/florian/data/ig/iqtest-dataset-ambient.h5", "test")
 
 OUT = os.path.join(get_data_dir(),"sample-{traintest}-{idx}-{refans}.png")
 
@@ -27,8 +27,8 @@ def sample(ds, idx, traintest):
         plt.imsave(OUT.format(traintest=traintest, refans=label, idx=idx),reshape(ds[idx][0][1+ans]))
 
 
-for i in range(10):
-    sample(ds_train, i, "train")
+for i in range(40):
+    # sample(ds_train, i, "train")
     sample(ds_test, i, "test")
 
 
